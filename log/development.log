@@ -1,0 +1,18 @@
+
+
+Started GET "/" for 127.0.0.1 at 2013-10-05 10:37:09 +1000
+Processing by Rails::WelcomeController#index as HTML
+  Rendered /Users/user/.rvm/gems/ruby-2.0.0-p195@spree/gems/railties-4.0.0/lib/rails/templates/rails/welcome/index.html.erb (1.5ms)
+Completed 200 OK in 24ms (Views: 6.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/rails/info/properties" for 127.0.0.1 at 2013-10-05 10:37:35 +1000
+Processing by Rails::InfoController#properties as HTML
+  Rendered /Users/user/.rvm/gems/ruby-2.0.0-p195@spree/gems/railties-4.0.0/lib/rails/templates/rails/info/properties.html.erb (0.3ms)
+Completed 200 OK in 14ms (Views: 9.0ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-10-05 10:37:41 +1000
+Processing by Rails::WelcomeController#index as HTML
+  Rendered /Users/user/.rvm/gems/ruby-2.0.0-p195@spree/gems/railties-4.0.0/lib/rails/templates/rails/welcome/index.html.erb (0.1ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.0ms)
