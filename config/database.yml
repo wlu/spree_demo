@@ -20,5 +20,5 @@ production:
   database: spree_production
   host: 127.0.0.1
   pool: 5
-  username: spree
-  password: spree
+  username: postgres
+  password: password
