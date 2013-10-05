@@ -2,20 +2,23 @@ development:
   adapter: postgresql
   encoding: unicode
   database: spree_development
+  host: 127.0.0.1
   pool: 5
-  username: spree
-  password: spree
+  username: postgres
+  password: password
 test:
   adapter: postgresql
   encoding: unicode
   database: spree_test
+  host: 127.0.0.1
   pool: 5
-  username: spree
-  password: spree
+  username: postgres
+  password: password
 production:
   adapter: postgresql
   encoding: unicode
   database: spree_production
+  host: 127.0.0.1
   pool: 5
   username: spree
   password: spree
