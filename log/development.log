@@ -914,3 +914,1340 @@ Started GET "/assets/store/all.js?body=1" for 127.0.0.1 at 2013-10-05 14:18:25 +
 
 
 Started GET "/assets/store/spree_frontend.js?body=1" for 127.0.0.1 at 2013-10-05 14:18:25 +1000
+PG::UndefinedTable: ERROR:  relation "spree_preferences" does not exist
+LINE 5:                WHERE a.attrelid = '"spree_preferences"'::reg...
+                                          ^
+:               SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod
+                FROM pg_attribute a LEFT JOIN pg_attrdef d
+                  ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+               WHERE a.attrelid = '"spree_preferences"'::regclass
+                 AND a.attnum > 0 AND NOT a.attisdropped
+               ORDER BY a.attnum
+
+PG::UndefinedTable: ERROR:  relation "spree_preferences" does not exist
+LINE 5:                WHERE a.attrelid = '"spree_preferences"'::reg...
+                                          ^
+:               SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod
+                FROM pg_attribute a LEFT JOIN pg_attrdef d
+                  ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+               WHERE a.attrelid = '"spree_preferences"'::regclass
+                 AND a.attnum > 0 AND NOT a.attisdropped
+               ORDER BY a.attnum
+
+  [1m[36m (5.5ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (5.3ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to SpreeOneTwo (20131005015745)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (10.3ms)[0m  [1mCREATE TABLE "spree_activators" ("id" serial primary key, "description" character varying(255), "expires_at" timestamp, "starts_at" timestamp, "name" character varying(255), "event_name" character varying(255), "type" character varying(255), "usage_limit" integer, "match_policy" character varying(255) DEFAULT 'all', "code" character varying(255), "advertise" boolean DEFAULT 'f', "path" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (6.4ms)[0m  CREATE TABLE "spree_addresses" ("id" serial primary key, "firstname" character varying(255), "lastname" character varying(255), "address1" character varying(255), "address2" character varying(255), "city" character varying(255), "zipcode" character varying(255), "phone" character varying(255), "state_name" character varying(255), "alternative_phone" character varying(255), "company" character varying(255), "state_id" integer, "country_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (2.7ms)[0m  [1mCREATE INDEX "index_addresses_on_firstname" ON "spree_addresses" ("firstname")[0m
+  [1m[35m (1.5ms)[0m  CREATE INDEX "index_addresses_on_lastname" ON "spree_addresses" ("lastname")
+  [1m[36m (8.7ms)[0m  [1mCREATE TABLE "spree_adjustments" ("id" serial primary key, "source_id" integer, "source_type" character varying(255), "adjustable_id" integer, "adjustable_type" character varying(255), "originator_id" integer, "originator_type" character varying(255), "amount" decimal(8,2), "label" character varying(255), "mandatory" boolean, "locked" boolean, "eligible" boolean DEFAULT 't', "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.0ms)[0m  CREATE INDEX "index_adjustments_on_order_id" ON "spree_adjustments" ("adjustable_id")
+  [1m[36m (5.4ms)[0m  [1mCREATE TABLE "spree_assets" ("id" serial primary key, "viewable_id" integer, "viewable_type" character varying(255), "attachment_width" integer, "attachment_height" integer, "attachment_file_size" integer, "position" integer, "attachment_content_type" character varying(255), "attachment_file_name" character varying(255), "type" character varying(75), "attachment_updated_at" timestamp, "alt" text) [0m
+  [1m[35m (2.1ms)[0m  CREATE INDEX "index_assets_on_viewable_id" ON "spree_assets" ("viewable_id")
+  [1m[36m (1.8ms)[0m  [1mCREATE INDEX "index_assets_on_viewable_type_and_type" ON "spree_assets" ("viewable_type", "type")[0m
+  [1m[35m (4.9ms)[0m  CREATE TABLE "spree_calculators" ("id" serial primary key, "type" character varying(255), "calculable_id" integer, "calculable_type" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (3.1ms)[0m  [1mCREATE TABLE "spree_configurations" ("id" serial primary key, "name" character varying(255), "type" character varying(50), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (1.9ms)[0m  CREATE INDEX "index_spree_configurations_on_name_and_type" ON "spree_configurations" ("name", "type")
+  [1m[36m (5.4ms)[0m  [1mCREATE TABLE "spree_countries" ("id" serial primary key, "iso_name" character varying(255), "iso" character varying(255), "iso3" character varying(255), "name" character varying(255), "numcode" integer) [0m
+  [1m[35m (6.0ms)[0m  CREATE TABLE "spree_credit_cards" ("id" serial primary key, "month" character varying(255), "year" character varying(255), "cc_type" character varying(255), "last_digits" character varying(255), "first_name" character varying(255), "last_name" character varying(255), "start_month" character varying(255), "start_year" character varying(255), "issue_number" character varying(255), "address_id" integer, "gateway_customer_profile_id" character varying(255), "gateway_payment_profile_id" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (5.5ms)[0m  [1mCREATE TABLE "spree_gateways" ("id" serial primary key, "type" character varying(255), "name" character varying(255), "description" text, "active" boolean DEFAULT 't', "environment" character varying(255) DEFAULT 'development', "server" character varying(255) DEFAULT 'test', "test_mode" boolean DEFAULT 't', "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (3.6ms)[0m  CREATE TABLE "spree_inventory_units" ("id" serial primary key, "lock_version" integer DEFAULT 0, "state" character varying(255), "variant_id" integer, "order_id" integer, "shipment_id" integer, "return_authorization_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (2.3ms)[0m  [1mCREATE INDEX "index_inventory_units_on_order_id" ON "spree_inventory_units" ("order_id")[0m
+  [1m[35m (1.8ms)[0m  CREATE INDEX "index_inventory_units_on_shipment_id" ON "spree_inventory_units" ("shipment_id")
+  [1m[36m (1.7ms)[0m  [1mCREATE INDEX "index_inventory_units_on_variant_id" ON "spree_inventory_units" ("variant_id")[0m
+  [1m[35m (4.1ms)[0m  CREATE TABLE "spree_line_items" ("id" serial primary key, "variant_id" integer, "order_id" integer, "quantity" integer NOT NULL, "price" decimal(8,2) NOT NULL, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (1.7ms)[0m  [1mCREATE INDEX "index_spree_line_items_on_order_id" ON "spree_line_items" ("order_id")[0m
+  [1m[35m (2.5ms)[0m  CREATE INDEX "index_spree_line_items_on_variant_id" ON "spree_line_items" ("variant_id")
+  [1m[36m (8.4ms)[0m  [1mCREATE TABLE "spree_log_entries" ("id" serial primary key, "source_id" integer, "source_type" character varying(255), "details" text, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (4.1ms)[0m  CREATE TABLE "spree_mail_methods" ("id" serial primary key, "environment" character varying(255), "active" boolean DEFAULT 't', "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (4.9ms)[0m  [1mCREATE TABLE "spree_option_types" ("id" serial primary key, "name" character varying(100), "presentation" character varying(100), "position" integer DEFAULT 0 NOT NULL, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (0.8ms)[0m  CREATE TABLE "spree_option_types_prototypes" ("prototype_id" integer, "option_type_id" integer) 
+  [1m[36m (8.3ms)[0m  [1mCREATE TABLE "spree_option_values" ("id" serial primary key, "position" integer, "name" character varying(255), "presentation" character varying(255), "option_type_id" integer, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (0.7ms)[0m  CREATE TABLE "spree_option_values_variants" ("variant_id" integer, "option_value_id" integer) 
+  [1m[36m (2.0ms)[0m  [1mCREATE INDEX "index_option_values_variants_on_variant_id_and_option_value_id" ON "spree_option_values_variants" ("variant_id", "option_value_id")[0m
+  [1m[35m (2.3ms)[0m  CREATE INDEX "index_spree_option_values_variants_on_variant_id" ON "spree_option_values_variants" ("variant_id")
+  [1m[36m (7.3ms)[0m  [1mCREATE TABLE "spree_orders" ("id" serial primary key, "number" character varying(15), "item_total" decimal(8,2) DEFAULT 0.0 NOT NULL, "total" decimal(8,2) DEFAULT 0.0 NOT NULL, "state" character varying(255), "adjustment_total" decimal(8,2) DEFAULT 0.0 NOT NULL, "user_id" integer, "completed_at" timestamp, "bill_address_id" integer, "ship_address_id" integer, "payment_total" decimal(8,2) DEFAULT 0.0, "shipping_method_id" integer, "shipment_state" character varying(255), "payment_state" character varying(255), "email" character varying(255), "special_instructions" text, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.5ms)[0m  CREATE INDEX "index_spree_orders_on_number" ON "spree_orders" ("number")
+  [1m[36m (7.5ms)[0m  [1mCREATE TABLE "spree_payment_methods" ("id" serial primary key, "type" character varying(255), "name" character varying(255), "description" text, "active" boolean DEFAULT 't', "environment" character varying(255) DEFAULT 'development', "deleted_at" timestamp, "display_on" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (8.8ms)[0m  CREATE TABLE "spree_payments" ("id" serial primary key, "amount" decimal(8,2) DEFAULT 0.0 NOT NULL, "order_id" integer, "source_id" integer, "source_type" character varying(255), "payment_method_id" integer, "state" character varying(255), "response_code" character varying(255), "avs_response" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (7.9ms)[0m  [1mCREATE TABLE "spree_preferences" ("id" serial primary key, "name" character varying(100), "owner_id" integer, "owner_type" character varying(255), "value" text, "key" character varying(255), "value_type" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.8ms)[0m  CREATE UNIQUE INDEX "index_spree_preferences_on_key" ON "spree_preferences" ("key")
+  [1m[36m (5.1ms)[0m  [1mCREATE TABLE "spree_product_option_types" ("id" serial primary key, "position" integer, "product_id" integer, "option_type_id" integer, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (4.3ms)[0m  CREATE TABLE "spree_product_properties" ("id" serial primary key, "value" character varying(255), "product_id" integer, "property_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (3.5ms)[0m  [1mCREATE INDEX "index_product_properties_on_product_id" ON "spree_product_properties" ("product_id")[0m
+  [1m[35m (9.2ms)[0m  CREATE TABLE "spree_products" ("id" serial primary key, "name" character varying(255) DEFAULT '' NOT NULL, "description" text, "available_on" timestamp, "deleted_at" timestamp, "permalink" character varying(255), "meta_description" character varying(255), "meta_keywords" character varying(255), "tax_category_id" integer, "shipping_category_id" integer, "count_on_hand" integer DEFAULT 0 NOT NULL, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (3.3ms)[0m  [1mCREATE INDEX "index_spree_products_on_available_on" ON "spree_products" ("available_on")[0m
+  [1m[35m (2.5ms)[0m  CREATE INDEX "index_spree_products_on_deleted_at" ON "spree_products" ("deleted_at")
+  [1m[36m (2.9ms)[0m  [1mCREATE INDEX "index_spree_products_on_name" ON "spree_products" ("name")[0m
+  [1m[35m (1.7ms)[0m  CREATE INDEX "index_spree_products_on_permalink" ON "spree_products" ("permalink")
+  [1m[36m (0.8ms)[0m  [1mCREATE TABLE "spree_products_taxons" ("product_id" integer, "taxon_id" integer) [0m
+  [1m[35m (1.8ms)[0m  CREATE INDEX "index_spree_products_taxons_on_product_id" ON "spree_products_taxons" ("product_id")
+  [1m[36m (2.1ms)[0m  [1mCREATE INDEX "index_spree_products_taxons_on_taxon_id" ON "spree_products_taxons" ("taxon_id")[0m
+  [1m[35m (7.5ms)[0m  CREATE TABLE "spree_properties" ("id" serial primary key, "name" character varying(255), "presentation" character varying(255) NOT NULL, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (0.7ms)[0m  [1mCREATE TABLE "spree_properties_prototypes" ("prototype_id" integer, "property_id" integer) [0m
+  [1m[35m (4.9ms)[0m  CREATE TABLE "spree_prototypes" ("id" serial primary key, "name" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (7.7ms)[0m  [1mCREATE TABLE "spree_return_authorizations" ("id" serial primary key, "number" character varying(255), "state" character varying(255), "amount" decimal(8,2) DEFAULT 0.0 NOT NULL, "order_id" integer, "reason" text, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (4.5ms)[0m  CREATE TABLE "spree_roles" ("id" serial primary key, "name" character varying(255)) 
+  [1m[36m (0.9ms)[0m  [1mCREATE TABLE "spree_roles_users" ("role_id" integer, "user_id" integer) [0m
+  [1m[35m (3.2ms)[0m  CREATE INDEX "index_spree_roles_users_on_role_id" ON "spree_roles_users" ("role_id")
+  [1m[36m (3.2ms)[0m  [1mCREATE INDEX "index_spree_roles_users_on_user_id" ON "spree_roles_users" ("user_id")[0m
+  [1m[35m (7.5ms)[0m  CREATE TABLE "spree_shipments" ("id" serial primary key, "tracking" character varying(255), "number" character varying(255), "cost" decimal(8,2), "shipped_at" timestamp, "order_id" integer, "shipping_method_id" integer, "address_id" integer, "state" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (2.6ms)[0m  [1mCREATE INDEX "index_shipments_on_number" ON "spree_shipments" ("number")[0m
+  [1m[35m (3.6ms)[0m  CREATE TABLE "spree_shipping_categories" ("id" serial primary key, "name" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (8.2ms)[0m  [1mCREATE TABLE "spree_shipping_methods" ("id" serial primary key, "name" character varying(255), "zone_id" integer, "display_on" character varying(255), "shipping_category_id" integer, "match_none" boolean, "match_all" boolean, "match_one" boolean, "deleted_at" timestamp, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (6.7ms)[0m  CREATE TABLE "spree_state_changes" ("id" serial primary key, "name" character varying(255), "previous_state" character varying(255), "stateful_id" integer, "user_id" integer, "stateful_type" character varying(255), "next_state" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (5.8ms)[0m  [1mCREATE TABLE "spree_states" ("id" serial primary key, "name" character varying(255), "abbr" character varying(255), "country_id" integer) [0m
+  [1m[35m (5.9ms)[0m  CREATE TABLE "spree_tax_categories" ("id" serial primary key, "name" character varying(255), "description" character varying(255), "is_default" boolean DEFAULT 'f', "deleted_at" timestamp, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (3.5ms)[0m  [1mCREATE TABLE "spree_tax_rates" ("id" serial primary key, "amount" decimal(8,5), "zone_id" integer, "tax_category_id" integer, "included_in_price" boolean DEFAULT 'f', "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (5.2ms)[0m  CREATE TABLE "spree_taxonomies" ("id" serial primary key, "name" character varying(255) NOT NULL, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (17.2ms)[0m  [1mCREATE TABLE "spree_taxons" ("id" serial primary key, "parent_id" integer, "position" integer DEFAULT 0, "name" character varying(255) NOT NULL, "permalink" character varying(255), "taxonomy_id" integer, "lft" integer, "rgt" integer, "icon_file_name" character varying(255), "icon_content_type" character varying(255), "icon_file_size" integer, "icon_updated_at" timestamp, "description" text, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (3.0ms)[0m  CREATE INDEX "index_taxons_on_parent_id" ON "spree_taxons" ("parent_id")
+  [1m[36m (2.5ms)[0m  [1mCREATE INDEX "index_taxons_on_permalink" ON "spree_taxons" ("permalink")[0m
+  [1m[35m (3.1ms)[0m  CREATE INDEX "index_taxons_on_taxonomy_id" ON "spree_taxons" ("taxonomy_id")
+  [1m[36m (6.9ms)[0m  [1mCREATE TABLE "spree_tokenized_permissions" ("id" serial primary key, "permissable_id" integer, "permissable_type" character varying(255), "token" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (9.5ms)[0m  CREATE INDEX "index_tokenized_name_and_type" ON "spree_tokenized_permissions" ("permissable_id", "permissable_type")
+  [1m[36m (6.1ms)[0m  [1mCREATE TABLE "spree_trackers" ("id" serial primary key, "environment" character varying(255), "analytics_id" character varying(255), "active" boolean DEFAULT 't', "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (7.3ms)[0m  CREATE TABLE "spree_users" ("id" serial primary key, "encrypted_password" character varying(128), "password_salt" character varying(128), "email" character varying(255), "remember_token" character varying(255), "persistence_token" character varying(255), "reset_password_token" character varying(255), "perishable_token" character varying(255), "sign_in_count" integer DEFAULT 0 NOT NULL, "failed_attempts" integer DEFAULT 0 NOT NULL, "last_request_at" timestamp, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying(255), "last_sign_in_ip" character varying(255), "login" character varying(255), "ship_address_id" integer, "bill_address_id" integer, "authentication_token" character varying(255), "unlock_token" character varying(255), "locked_at" timestamp, "remember_created_at" timestamp, "reset_password_sent_at" timestamp, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (4.3ms)[0m  [1mCREATE TABLE "spree_variants" ("id" serial primary key, "sku" character varying(255) DEFAULT '' NOT NULL, "price" decimal(8,2) NOT NULL, "weight" decimal(8,2), "height" decimal(8,2), "width" decimal(8,2), "depth" decimal(8,2), "deleted_at" timestamp, "is_master" boolean DEFAULT 'f', "product_id" integer, "count_on_hand" integer DEFAULT 0 NOT NULL, "cost_price" decimal(8,2), "position" integer) [0m
+  [1m[35m (2.0ms)[0m  CREATE INDEX "index_spree_variants_on_product_id" ON "spree_variants" ("product_id")
+  [1m[36m (5.6ms)[0m  [1mCREATE TABLE "spree_zone_members" ("id" serial primary key, "zoneable_id" integer, "zoneable_type" character varying(255), "zone_id" integer, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (8.0ms)[0m  CREATE TABLE "spree_zones" ("id" serial primary key, "name" character varying(255), "description" character varying(255), "default_tax" boolean DEFAULT 'f', "zone_members_count" integer DEFAULT 0, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36mSQL (1.9ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015745"]]
+  [1m[35m (9.1ms)[0m  COMMIT
+Migrating to SpreePromoOneTwo (20131005015746)
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35m (1.1ms)[0m  CREATE TABLE "spree_products_promotion_rules" ("product_id" integer, "promotion_rule_id" integer) 
+  [1m[36m (2.5ms)[0m  [1mCREATE INDEX "index_products_promotion_rules_on_product_id" ON "spree_products_promotion_rules" ("product_id")[0m
+  [1m[35m (1.8ms)[0m  CREATE INDEX "index_products_promotion_rules_on_promotion_rule_id" ON "spree_products_promotion_rules" ("promotion_rule_id")
+  [1m[36m (4.6ms)[0m  [1mCREATE TABLE "spree_promotion_action_line_items" ("id" serial primary key, "promotion_action_id" integer, "variant_id" integer, "quantity" integer DEFAULT 1) [0m
+  [1m[35m (3.9ms)[0m  CREATE TABLE "spree_promotion_actions" ("id" serial primary key, "activator_id" integer, "position" integer, "type" character varying(255)) 
+  [1m[36m (3.4ms)[0m  [1mCREATE TABLE "spree_promotion_rules" ("id" serial primary key, "activator_id" integer, "user_id" integer, "product_group_id" integer, "type" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.2ms)[0m  CREATE INDEX "index_promotion_rules_on_product_group_id" ON "spree_promotion_rules" ("product_group_id")
+  [1m[36m (2.7ms)[0m  [1mCREATE INDEX "index_promotion_rules_on_user_id" ON "spree_promotion_rules" ("user_id")[0m
+  [1m[35m (0.7ms)[0m  CREATE TABLE "spree_promotion_rules_users" ("user_id" integer, "promotion_rule_id" integer) 
+  [1m[36m (1.7ms)[0m  [1mCREATE INDEX "index_promotion_rules_users_on_promotion_rule_id" ON "spree_promotion_rules_users" ("promotion_rule_id")[0m
+  [1m[35m (2.0ms)[0m  CREATE INDEX "index_promotion_rules_users_on_user_id" ON "spree_promotion_rules_users" ("user_id")
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015746"]]
+  [1m[35m (1.3ms)[0m  COMMIT
+Migrating to AddTaxRateLabel (20131005015747)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "spree_tax_rates" ADD COLUMN "name" character varying(255)
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015747"]]
+  [1m[35m (1.1ms)[0m  COMMIT
+Migrating to AddToggleTaxRateDisplay (20131005015748)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (8.1ms)[0m  ALTER TABLE "spree_tax_rates" ADD COLUMN "show_rate_in_label" boolean DEFAULT 't'
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015748"]]
+  [1m[35m (1.1ms)[0m  COMMIT
+Migrating to RemoveUnusedPreferenceColumns (20131005015749)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "spree_preferences" DROP "name"
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_preferences" DROP "owner_id"[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_preferences" DROP "owner_type"
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015749"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddLockVersionToVariant (20131005015750)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (8.7ms)[0m  ALTER TABLE "spree_variants" ADD COLUMN "lock_version" integer DEFAULT 0
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015750"]]
+  [1m[35m (1.9ms)[0m  COMMIT
+Migrating to AddStatesRequiredToCountries (20131005015751)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (8.6ms)[0m  ALTER TABLE "spree_countries" ADD COLUMN "states_required" boolean DEFAULT 't'
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015751"]]
+  [1m[35m (1.6ms)[0m  COMMIT
+Migrating to AddOnDemandToProductAndVariant (20131005015752)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (13.6ms)[0m  ALTER TABLE "spree_products" ADD COLUMN "on_demand" boolean DEFAULT 'f'
+  [1m[36m (5.9ms)[0m  [1mALTER TABLE "spree_variants" ADD COLUMN "on_demand" boolean DEFAULT 'f'[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015752"]]
+  [1m[36m (2.7ms)[0m  [1mCOMMIT[0m
+Migrating to RemoveNotNullConstraintFromProductsOnHand (20131005015753)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "spree_products" ALTER COLUMN "count_on_hand" TYPE integer[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_products" ALTER "count_on_hand" DROP NOT NULL
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_variants" ALTER COLUMN "count_on_hand" TYPE integer[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_variants" ALTER "count_on_hand" DROP NOT NULL
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015753"]]
+  [1m[35m (1.3ms)[0m  COMMIT
+Migrating to SplitPricesFromVariants (20131005015754)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (4.4ms)[0m  CREATE TABLE "spree_prices" ("id" serial primary key, "variant_id" integer NOT NULL, "amount" decimal(8,2) NOT NULL, "currency" character varying(255)) 
+  [1m[36mSpree::Variant Load (0.8ms)[0m  [1mSELECT "spree_variants".* FROM "spree_variants" WHERE "spree_variants"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_variants" DROP "price"
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015754"]]
+  [1m[35m (0.9ms)[0m  COMMIT
+Migrating to RemoveNotNullFromSpreePricesAmount (20131005015755)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_prices" ALTER COLUMN "amount" TYPE decimal(8,2)
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_prices" ALTER "amount" DROP NOT NULL[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015755"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddCurrencyToLineItems (20131005015756)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_line_items" ADD COLUMN "currency" character varying(255)[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015756"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddCurrencyToOrders (20131005015757)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_orders" ADD COLUMN "currency" character varying(255)[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015757"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddCostCurrencyToVariants (20131005015758)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (2.8ms)[0m  [1mALTER TABLE "spree_variants" ADD COLUMN "cost_currency" character varying(255)[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015758"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to RemoveDisplayOnFromPaymentMethods (20131005015759)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_payment_methods" DROP "display_on"[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015759"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddPositionToTaxonomies (20131005015760)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (5.0ms)[0m  [1mALTER TABLE "spree_taxonomies" ADD COLUMN "position" integer DEFAULT 0[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015760"]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddLastIpToSpreeOrders (20131005015761)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_orders" ADD COLUMN "last_ip_address" character varying(255)[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015761"]]
+  [1m[36m (7.2ms)[0m  [1mCOMMIT[0m
+Migrating to AddStateToSpreeAdjustments (20131005015762)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_adjustments" ADD COLUMN "state" character varying(255)[0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "spree_adjustments" DROP "locked"
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015762"]]
+  [1m[35m (0.9ms)[0m  COMMIT
+Migrating to AddDisplayOnToSpreePaymentMethods (20131005015763)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "spree_payment_methods" ADD COLUMN "display_on" character varying(255)
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015763"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to AddPositionToProductProperties (20131005015764)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (6.6ms)[0m  ALTER TABLE "spree_product_properties" ADD COLUMN "position" integer DEFAULT 0
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015764"]]
+  [1m[35m (1.4ms)[0m  COMMIT
+Migrating to AddIdentifierToSpreePayments (20131005015765)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_payments" ADD COLUMN "identifier" character varying(255)
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015765"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to AddOrderIdIndexToPayments (20131005015766)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (11.3ms)[0m  CREATE INDEX "index_spree_payments_on_order_id" ON "spree_payments" ("order_id")
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015766"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to AddPrimaryToSpreeProductsTaxons (20131005015767)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (8.3ms)[0m  ALTER TABLE "spree_products_taxons" ADD COLUMN "id" serial primary key
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015767"]]
+  [1m[35m (1.6ms)[0m  COMMIT
+Migrating to CreateSpreeStockItems (20131005015768)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.1ms)[0m  CREATE TABLE "spree_stock_items" ("id" serial primary key, "stock_location_id" integer, "variant_id" integer, "count_on_hand" integer DEFAULT 0 NOT NULL, "lock_version" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (1.9ms)[0m  [1mCREATE INDEX "index_spree_stock_items_on_stock_location_id" ON "spree_stock_items" ("stock_location_id")[0m
+  [1m[35m (2.7ms)[0m  CREATE INDEX "stock_item_by_loc_and_var_id" ON "spree_stock_items" ("stock_location_id", "variant_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015768"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to CreateSpreeStockLocations (20131005015769)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.3ms)[0m  CREATE TABLE "spree_stock_locations" ("id" serial primary key, "name" character varying(255), "address_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (1.9ms)[0m  [1mCREATE INDEX "index_spree_stock_locations_on_address_id" ON "spree_stock_locations" ("address_id")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015769"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDefaultStock (20131005015770)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (22.1ms)[0m  [1mINSERT INTO "spree_stock_locations" ("created_at", "name", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", Wed, 06 Nov 2013 11:13:20 UTC +00:00], ["name", "default"], ["updated_at", Wed, 06 Nov 2013 11:13:20 UTC +00:00]]
+  [1m[35mSpree::Variant Load (0.5ms)[0m  SELECT "spree_variants".* FROM "spree_variants" WHERE "spree_variants"."deleted_at" IS NULL
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_variants" DROP "count_on_hand"[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015770"]]
+  [1m[36m (1.2ms)[0m  [1mCOMMIT[0m
+Migrating to AddOrderIdIndexToShipments (20131005015771)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (3.0ms)[0m  [1mCREATE INDEX "index_spree_shipments_on_order_id" ON "spree_shipments" ("order_id")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015771"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to ChangeMetaDescriptionOnSpreeProductsToText (20131005015772)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_products" ALTER COLUMN "meta_description" TYPE text[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015772"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddStockLocationIdToSpreeShipments (20131005015773)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_shipments" ADD COLUMN "stock_location_id" integer[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015773"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddPendingToInventoryUnit (20131005015774)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (11.5ms)[0m  [1mALTER TABLE "spree_inventory_units" ADD COLUMN "pending" boolean DEFAULT 't'[0m
+  [1m[35mSQL (0.7ms)[0m  UPDATE "spree_inventory_units" SET "pending" = 'f'
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015774"]]
+  [1m[35m (1.9ms)[0m  COMMIT
+Migrating to RemoveOnDemandFromProductAndVariant (20131005015775)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "spree_products" DROP "on_demand"
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_variants" DROP "on_demand"[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015775"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateShippingMethodZone (20131005015776)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.7ms)[0m  [1mCREATE TABLE "shipping_methods_zones" ("shipping_method_id" integer, "zone_id" integer) [0m
+  [1m[35mSpree::ShippingMethod Load (0.5ms)[0m  SELECT "spree_shipping_methods".* FROM "spree_shipping_methods" WHERE "spree_shipping_methods"."deleted_at" IS NULL
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_shipping_methods" DROP "zone_id"[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015776"]]
+  [1m[36m (2.0ms)[0m  [1mCOMMIT[0m
+Migrating to RemoveShippingCategoryIdFromShippingMethod (20131005015777)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_shipping_methods" DROP "shipping_category_id"[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015777"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateShippingMethodCategories (20131005015778)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (17.2ms)[0m  [1mCREATE TABLE "spree_shipping_method_categories" ("id" serial primary key, "shipping_method_id" integer NOT NULL, "shipping_category_id" integer NOT NULL, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.0ms)[0m  CREATE INDEX "index_spree_shipping_method_categories_on_shipping_method_id" ON "spree_shipping_method_categories" ("shipping_method_id")
+  [1m[36m (2.7ms)[0m  [1mCREATE INDEX "index_spree_shipping_method_categories_on_shipping_category_id" ON "spree_shipping_method_categories" ("shipping_category_id")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015778"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddTrackingUrlToSpreeShippingMethods (20131005015779)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_shipping_methods" ADD COLUMN "tracking_url" character varying(255)[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015779"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateSpreeShippingRates (20131005015780)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (4.4ms)[0m  [1mCREATE TABLE "spree_shipping_rates" ("id" serial primary key, "shipment_id" integer, "shipping_method_id" integer, "selected" boolean DEFAULT 'f', "cost" decimal(8,2), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.4ms)[0m  CREATE UNIQUE INDEX "spree_shipping_rates_join_index" ON "spree_shipping_rates" ("shipment_id", "shipping_method_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015780"]]
+  [1m[35m (1.0ms)[0m  COMMIT
+Migrating to RemoveCategoryMatchAttributesFromShippingMethod (20131005015781)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_shipping_methods" DROP "match_none"
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_shipping_methods" DROP "match_one"[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_shipping_methods" DROP "match_all"
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015781"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to CreateStockMovements (20131005015782)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.6ms)[0m  CREATE TABLE "spree_stock_movements" ("id" serial primary key, "stock_item_id" integer, "quantity" integer, "action" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (1.9ms)[0m  [1mCREATE INDEX "index_spree_stock_movements_on_stock_item_id" ON "spree_stock_movements" ("stock_item_id")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015782"]]
+  [1m[36m (1.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddAddressFieldsToStockLocation (20131005015783)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_stock_locations" DROP "address_id"[0m
+  [1m[35m (2.5ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "address1" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_stock_locations" ADD COLUMN "address2" character varying(255)[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "city" character varying(255)
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_stock_locations" ADD COLUMN "state_id" integer[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "state_name" character varying(255)
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_stock_locations" ADD COLUMN "country_id" integer[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "zipcode" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_stock_locations" ADD COLUMN "phone" character varying(255)[0m
+  [1m[35mSpree::Country Load (0.8ms)[0m  SELECT "spree_countries".* FROM "spree_countries" WHERE "spree_countries"."iso" = 'US' ORDER BY "spree_countries"."id" ASC LIMIT 1
+  [1m[36mSpree::Country Load (0.5ms)[0m  [1mSELECT "spree_countries".* FROM "spree_countries" ORDER BY "spree_countries"."id" ASC LIMIT 1[0m
+  [1m[35mSQL (0.5ms)[0m  UPDATE "spree_stock_locations" SET "country_id" = NULL
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015783"]]
+  [1m[35m (1.1ms)[0m  COMMIT
+Migrating to AddActiveFieldToStockLocations (20131005015784)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (7.1ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "active" boolean DEFAULT 't'
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015784"]]
+  [1m[35m (1.4ms)[0m  COMMIT
+Migrating to AddBackorderableToStockItem (20131005015785)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (8.4ms)[0m  ALTER TABLE "spree_stock_items" ADD COLUMN "backorderable" boolean DEFAULT 't'
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015785"]]
+  [1m[35m (1.3ms)[0m  COMMIT
+Migrating to AddDefaultQuantityToStockMovement (20131005015786)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_stock_movements" ALTER COLUMN "quantity" TYPE integer
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_stock_movements" ALTER COLUMN "quantity" SET DEFAULT 0[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015786"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddSourceAndDestinationToStockMovements (20131005015787)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_stock_movements" ADD COLUMN "source_id" integer[0m
+  [1m[35m (2.3ms)[0m  ALTER TABLE "spree_stock_movements" ADD COLUMN "source_type" character varying(255)
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_stock_movements" ADD COLUMN "destination_id" integer[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_stock_movements" ADD COLUMN "destination_type" character varying(255)
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015787"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to ChangeOrdersTotalPrecision (20131005015788)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (9.0ms)[0m  ALTER TABLE "spree_orders" ALTER COLUMN "item_total" TYPE decimal(10,2)
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_orders" ALTER COLUMN "item_total" SET DEFAULT 0.0[0m
+  [1m[35m (0.5ms)[0m  UPDATE "spree_orders" SET "item_total"=0.0 WHERE "item_total" IS NULL
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_orders" ALTER "item_total" SET NOT NULL[0m
+  [1m[35m (10.3ms)[0m  ALTER TABLE "spree_orders" ALTER COLUMN "total" TYPE decimal(10,2)
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_orders" ALTER COLUMN "total" SET DEFAULT 0.0[0m
+  [1m[35m (0.4ms)[0m  UPDATE "spree_orders" SET "total"=0.0 WHERE "total" IS NULL
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_orders" ALTER "total" SET NOT NULL[0m
+  [1m[35m (10.0ms)[0m  ALTER TABLE "spree_orders" ALTER COLUMN "adjustment_total" TYPE decimal(10,2)
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_orders" ALTER COLUMN "adjustment_total" SET DEFAULT 0.0[0m
+  [1m[35m (0.5ms)[0m  UPDATE "spree_orders" SET "adjustment_total"=0.0 WHERE "adjustment_total" IS NULL
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_orders" ALTER "adjustment_total" SET NOT NULL[0m
+  [1m[35m (10.8ms)[0m  ALTER TABLE "spree_orders" ALTER COLUMN "payment_total" TYPE decimal(10,2)
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_orders" ALTER COLUMN "payment_total" SET DEFAULT 0.0[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015788"]]
+  [1m[36m (5.2ms)[0m  [1mCOMMIT[0m
+Migrating to ChangeSpreePaymentsAmountPrecision (20131005015789)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (9.6ms)[0m  [1mALTER TABLE "spree_payments" ALTER COLUMN "amount" TYPE decimal(10,2)[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "spree_payments" ALTER COLUMN "amount" SET DEFAULT 0.0
+  [1m[36m (0.6ms)[0m  [1mUPDATE "spree_payments" SET "amount"=0.0 WHERE "amount" IS NULL[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_payments" ALTER "amount" SET NOT NULL
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015789"]]
+  [1m[35m (2.3ms)[0m  COMMIT
+Migrating to ChangeSpreeReturnAuthorizationAmountPrecision (20131005015790)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (5.5ms)[0m  ALTER TABLE "spree_return_authorizations" ALTER COLUMN "amount" TYPE decimal(10,2)
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_return_authorizations" ALTER COLUMN "amount" SET DEFAULT 0.0[0m
+  [1m[35m (0.4ms)[0m  UPDATE "spree_return_authorizations" SET "amount"=0.0 WHERE "amount" IS NULL
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_return_authorizations" ALTER "amount" SET NOT NULL[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015790"]]
+  [1m[36m (2.4ms)[0m  [1mCOMMIT[0m
+Migrating to ChangeAdjustmentsAmountPrecision (20131005015791)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (7.2ms)[0m  [1mALTER TABLE "spree_adjustments" ALTER COLUMN "amount" TYPE decimal(10,2)[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015791"]]
+  [1m[36m (1.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddOriginatorToStockMovement (20131005015792)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_stock_movements" ADD COLUMN "originator_id" integer[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_stock_movements" ADD COLUMN "originator_type" character varying(255)
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015792"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to DropSourceAndDestinationFromStockMovement (20131005015793)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_stock_movements" DROP "source_id"
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_stock_movements" DROP "source_type"[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_stock_movements" DROP "destination_id"
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_stock_movements" DROP "destination_type"[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015793"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to MigrateInventoryUnitSoldToOnHand (20131005015794)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mUPDATE "spree_inventory_units" SET "state" = 'on_hand' WHERE "spree_inventory_units"."state" = 'sold'[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015794"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddStockLocationToRma (20131005015795)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_return_authorizations" ADD COLUMN "stock_location_id" integer[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015795"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+Migrating to UpdateShipmentStateForCanceledOrders (20131005015796)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015796"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddSeoMetasToTaxons (20131005015797)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_taxons" ADD COLUMN "meta_title" character varying(255)
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_taxons" ADD COLUMN "meta_description" character varying(255)[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_taxons" ADD COLUMN "meta_keywords" character varying(255)
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015797"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to RemoveStockItemAndVariantLock (20131005015798)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_stock_items" DROP "lock_version"
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_variants" DROP "lock_version"[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015798"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to UpdateAdjustmentStates (20131005015799)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSpree::Order Load (0.8ms)[0m  [1mSELECT "spree_orders".* FROM "spree_orders" WHERE (completed_at IS NOT NULL)[0m
+  [1m[35mSpree::Shipment Load (0.6ms)[0m  SELECT "spree_shipments".* FROM "spree_shipments" WHERE "spree_shipments"."state" IN ('shipped')
+  [1m[36mSQL (0.5ms)[0m  [1mUPDATE "spree_adjustments" SET "state" = 'open' WHERE "spree_adjustments"."state" IS NULL[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015799"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddShippingRatesToShipments (20131005015800)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36mSpree::Shipment Load (0.5ms)[0m  [1mSELECT "spree_shipments".* FROM "spree_shipments"[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_shipments" DROP "shipping_method_id"
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015800"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to CreateSpreeStockTransfers (20131005015801)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (5.2ms)[0m  CREATE TABLE "spree_stock_transfers" ("id" serial primary key, "type" character varying(255), "reference_number" character varying(255), "source_location_id" integer, "destination_location_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (2.3ms)[0m  [1mCREATE INDEX "index_spree_stock_transfers_on_source_location_id" ON "spree_stock_transfers" ("source_location_id")[0m
+  [1m[35m (7.0ms)[0m  CREATE INDEX "index_spree_stock_transfers_on_destination_location_id" ON "spree_stock_transfers" ("destination_location_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015801"]]
+  [1m[35m (1.5ms)[0m  COMMIT
+Migrating to DropProductsCountOnHand (20131005015802)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_products" DROP "count_on_hand"
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015802"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to SetDefaultShippingRateCost (20131005015803)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_shipping_rates" ALTER COLUMN "cost" TYPE decimal(8,2)
+  [1m[36m (0.7ms)[0m  [1mALTER TABLE "spree_shipping_rates" ALTER COLUMN "cost" SET DEFAULT 0[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015803"]]
+  [1m[36m (4.2ms)[0m  [1mCOMMIT[0m
+Migrating to AddNumberToStockTransfer (20131005015804)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mDROP INDEX "index_spree_stock_transfers_on_source_location_id"[0m
+  [1m[35m (0.3ms)[0m  DROP INDEX "index_spree_stock_transfers_on_destination_location_id"
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_stock_transfers" RENAME COLUMN "reference_number" TO "reference"[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_stock_transfers" ADD COLUMN "number" character varying(255)
+  [1m[36mSpree::StockTransfer Load (0.4ms)[0m  [1mSELECT "spree_stock_transfers".* FROM "spree_stock_transfers"[0m
+  [1m[35m (2.1ms)[0m  CREATE INDEX "index_spree_stock_transfers_on_number" ON "spree_stock_transfers" ("number")
+  [1m[36m (1.8ms)[0m  [1mCREATE INDEX "index_spree_stock_transfers_on_source_location_id" ON "spree_stock_transfers" ("source_location_id")[0m
+  [1m[35m (2.4ms)[0m  CREATE INDEX "index_spree_stock_transfers_on_destination_location_id" ON "spree_stock_transfers" ("destination_location_id")
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015804"]]
+  [1m[35m (1.1ms)[0m  COMMIT
+Migrating to AddSkuIndexToSpreeVariants (20131005015805)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (2.0ms)[0m  CREATE INDEX "index_spree_variants_on_sku" ON "spree_variants" ("sku")
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015805"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddBackorderableDefaultToSpreeStockLocation (20131005015806)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (7.6ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "backorderable_default" boolean DEFAULT 't'
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015806"]]
+  [1m[35m (1.6ms)[0m  COMMIT
+Migrating to AddPropageAllVariantsToSpreeStockLocation (20131005015807)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (6.5ms)[0m  ALTER TABLE "spree_stock_locations" ADD COLUMN "propagate_all_variants" boolean DEFAULT 't'
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015807"]]
+  [1m[35m (1.7ms)[0m  COMMIT
+Migrating to RenameShippingMethodsZonesToSpreeShippingMethodsZones (20131005015808)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "shipping_methods_zones" RENAME TO "spree_shipping_methods_zones"
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015808"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to AddUserIdIndexToSpreeOrders (20131005015809)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (2.1ms)[0m  CREATE INDEX "index_spree_orders_on_user_id" ON "spree_orders" ("user_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015809"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to AddUpdatedAtToSpreeCountries (20131005015810)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_countries" ADD COLUMN "updated_at" timestamp
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015810"]]
+  [1m[35m (1.2ms)[0m  COMMIT
+Migrating to AddUpdatedAtToSpreeStates (20131005015811)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_states" ADD COLUMN "updated_at" timestamp
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015811"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to AddCvvResultCodeAndCvvResultMessageToSpreePayments (20131005015812)
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "spree_payments" ADD COLUMN "cvv_response_code" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_payments" ADD COLUMN "cvv_response_message" character varying(255)[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015812"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddUniqueIndexToPermalinkOnSpreeProducts (20131005015813)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (2.5ms)[0m  [1mCREATE UNIQUE INDEX "permalink_idx_unique" ON "spree_products" ("permalink")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015813"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddUniqueIndexToOrdersShipmentsAndStockTransfers (20131005015814)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015814"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to AddDeletedAtToSpreeTaxRates (20131005015815)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_tax_rates" ADD COLUMN "deleted_at" timestamp
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015815"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to RemoveLockVersionFromInventoryUnits (20131005015816)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_inventory_units" DROP "lock_version"
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015816"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to AddCostPriceToLineItem (20131005015817)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_line_items" ADD COLUMN "cost_price" decimal(8,2)
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015817"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to SetBackorderableToDefaultToFalse (20131005015818)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "spree_stock_items" ALTER COLUMN "backorderable" TYPE boolean
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_stock_items" ALTER COLUMN "backorderable" SET DEFAULT 'f'[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_stock_locations" ALTER COLUMN "backorderable_default" TYPE boolean
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_stock_locations" ALTER COLUMN "backorderable_default" SET DEFAULT 'f'[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015818"]]
+  [1m[36m (1.2ms)[0m  [1mCOMMIT[0m
+Migrating to AddCreatedByIdToSpreeOrders (20131005015819)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_orders" ADD COLUMN "created_by_id" integer[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015819"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to IndexCompletedAtOnSpreeOrders (20131005015820)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (3.8ms)[0m  [1mCREATE INDEX "index_spree_orders_on_completed_at" ON "spree_orders" ("completed_at")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015820"]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddTaxCategoryIdToSpreeLineItems (20131005015821)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_line_items" ADD COLUMN "tax_category_id" integer[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015821"]]
+  [1m[36m (1.5ms)[0m  [1mCOMMIT[0m
+Migrating to MigrateTaxCategoriesToLineItems (20131005015822)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSpree::LineItem Load (0.6ms)[0m  [1mSELECT "spree_line_items".* FROM "spree_line_items" ORDER BY "spree_line_items"."id" ASC LIMIT 1000[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015822"]]
+  [1m[36m (1.3ms)[0m  [1mCOMMIT[0m
+Migrating to DropSpreeMailMethods (20131005015823)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (2.0ms)[0m  [1mDROP TABLE "spree_mail_methods"[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015823"]]
+  [1m[36m (2.5ms)[0m  [1mCOMMIT[0m
+Migrating to SetDefaultStockLocationOnShipments (20131005015824)
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36m (0.9ms)[0m  [1mSELECT COUNT(*) FROM "spree_shipments" WHERE (stock_location_id IS NULL)[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015824"]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddAdminNameColumnToSpreeShippingMethods (20131005015825)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (1.2ms)[0m  [1mALTER TABLE "spree_shipping_methods" ADD COLUMN "admin_name" character varying(255)[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015825"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddAdminNameColumnToSpreeStockLocations (20131005015826)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_stock_locations" ADD COLUMN "admin_name" character varying(255)[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015826"]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+Migrating to ExpandOrderNumberSize (20131005015827)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (14.3ms)[0m  [1mALTER TABLE "spree_orders" ALTER COLUMN "number" TYPE character varying(32)[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015827"]]
+  [1m[36m (3.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddDepthToSpreeTaxons (20131005015828)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_taxons" ADD COLUMN "depth" integer[0m
+  [1m[35mSpree::Taxon Load (0.6ms)[0m  SELECT "spree_taxons".* FROM "spree_taxons"
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015828"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddShippingCategoryToShippingMethodsAndProducts (20131005015829)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSpree::ShippingCategory Load (0.5ms)[0m  SELECT "spree_shipping_categories".* FROM "spree_shipping_categories" ORDER BY "spree_shipping_categories"."id" ASC LIMIT 1
+  [1m[36mSQL (1.2ms)[0m  [1mINSERT INTO "spree_shipping_categories" ("created_at", "name", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", Wed, 06 Nov 2013 11:13:23 UTC +00:00], ["name", "Default"], ["updated_at", Wed, 06 Nov 2013 11:13:23 UTC +00:00]]
+  [1m[35mSpree::ShippingMethod Load (0.5ms)[0m  SELECT "spree_shipping_methods".* FROM "spree_shipping_methods" WHERE "spree_shipping_methods"."deleted_at" IS NULL
+  [1m[36mSQL (0.8ms)[0m  [1mUPDATE "spree_products" SET "shipping_category_id" = 1 WHERE "spree_products"."deleted_at" IS NULL AND "spree_products"."shipping_category_id" IS NULL[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015829"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to MigrateOldShippingCalculators (20131005015830)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSpree::ShippingMethod Load (0.4ms)[0m  [1mSELECT "spree_shipping_methods".* FROM "spree_shipping_methods" WHERE "spree_shipping_methods"."deleted_at" IS NULL[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015830"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to ChangeStatesRequiredForCountries (20131005015831)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_countries" ALTER COLUMN "states_required" SET DEFAULT 'f'[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015831"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddDeletedAtToSpreeStockItems (20131005015832)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "spree_stock_items" ADD COLUMN "deleted_at" timestamp[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015832"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to RemoveUnusedCreditCardFields (20131005015833)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_credit_cards" DROP "start_month"[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_credit_cards" DROP "start_year"
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_credit_cards" DROP "issue_number"[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015833"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddApiKeyToSpreeUsers (20131005015834)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_users" ADD COLUMN "api_key" character varying(40)[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015834"]]
+  [1m[36m (2.3ms)[0m  [1mCOMMIT[0m
+Migrating to ResizeApiKeyField (20131005015835)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (11.1ms)[0m  [1mALTER TABLE "spree_users" ALTER COLUMN "api_key" TYPE character varying(48)[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015835"]]
+  [1m[36m (1.6ms)[0m  [1mCOMMIT[0m
+Migrating to RenameApiKeyToSpreeApiKey (20131005015836)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_users" RENAME COLUMN "api_key" TO "spree_api_key"[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015836"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateUsers (20131005015837)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015837"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to RenameColumnsForDevise (20131005015838)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015838"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to ConvertUserRememberField (20131005015839)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "spree_users" DROP "remember_created_at"[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_users" ADD COLUMN "remember_created_at" timestamp
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131005015839"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddResetPasswordSentAtToSpreeUsers (20131005015840)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015840"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to MakeUsersEmailIndexUnique (20131005015841)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (2.4ms)[0m  [1mCREATE UNIQUE INDEX "email_idx_unique" ON "spree_users" ("email")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131005015841"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddTranslationsToMainModels (20131106111313)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (10.5ms)[0m  [1mCREATE TABLE "spree_product_translations" ("id" serial primary key, "spree_product_id" integer, "locale" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.6ms)[0m  ALTER TABLE "spree_product_translations" ADD COLUMN "name" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_product_translations" ADD COLUMN "description" text[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_product_translations" ADD COLUMN "meta_description" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_product_translations" ADD COLUMN "meta_keywords" character varying(255)[0m
+  [1m[35mSpree::Product Load (0.4ms)[0m  SELECT "spree_products".* FROM "spree_products" WHERE "spree_products"."deleted_at" IS NULL ORDER BY "spree_products"."id" ASC LIMIT 1000
+  [1m[36m (1.9ms)[0m  [1mCREATE INDEX "index_spree_product_translations_on_spree_product_id" ON "spree_product_translations" ("spree_product_id")[0m
+  [1m[35m (1.7ms)[0m  CREATE INDEX "index_spree_product_translations_on_locale" ON "spree_product_translations" ("locale")
+  [1m[36m (3.1ms)[0m  [1mCREATE TABLE "spree_activator_translations" ("id" serial primary key, "spree_activator_id" integer, "locale" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.2ms)[0m  ALTER TABLE "spree_activator_translations" ADD COLUMN "name" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_activator_translations" ADD COLUMN "description" character varying(255)[0m
+  [1m[35mSpree::Promotion Load (0.7ms)[0m  SELECT "spree_activators".* FROM "spree_activators" WHERE "spree_activators"."type" IN ('Spree::Promotion') ORDER BY "spree_activators"."id" ASC LIMIT 1000
+  [1m[36m (2.2ms)[0m  [1mCREATE INDEX "index_spree_activator_translations_on_spree_activator_id" ON "spree_activator_translations" ("spree_activator_id")[0m
+  [1m[35m (2.1ms)[0m  CREATE INDEX "index_spree_activator_translations_on_locale" ON "spree_activator_translations" ("locale")
+  [1m[36m (3.5ms)[0m  [1mCREATE TABLE "spree_option_type_translations" ("id" serial primary key, "spree_option_type_id" integer, "locale" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (2.0ms)[0m  ALTER TABLE "spree_option_type_translations" ADD COLUMN "name" character varying(255)
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_option_type_translations" ADD COLUMN "presentation" character varying(255)[0m
+Scoped order and limit are ignored, it's forced to be batch order and batch size
+  [1m[35mSpree::OptionType Load (0.6ms)[0m  SELECT "spree_option_types".* FROM "spree_option_types" ORDER BY "spree_option_types"."id" ASC LIMIT 1000
+  [1m[36m (3.4ms)[0m  [1mCREATE INDEX "index_spree_option_type_translations_on_spree_option_type_id" ON "spree_option_type_translations" ("spree_option_type_id")[0m
+  [1m[35m (12.6ms)[0m  CREATE INDEX "index_spree_option_type_translations_on_locale" ON "spree_option_type_translations" ("locale")
+  [1m[36m (4.4ms)[0m  [1mCREATE TABLE "spree_property_translations" ("id" serial primary key, "spree_property_id" integer, "locale" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (3.6ms)[0m  ALTER TABLE "spree_property_translations" ADD COLUMN "name" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_property_translations" ADD COLUMN "presentation" character varying(255)[0m
+  [1m[35mSpree::Property Load (0.5ms)[0m  SELECT "spree_properties".* FROM "spree_properties" ORDER BY "spree_properties"."id" ASC LIMIT 1000
+  [1m[36m (4.1ms)[0m  [1mCREATE INDEX "index_spree_property_translations_on_spree_property_id" ON "spree_property_translations" ("spree_property_id")[0m
+  [1m[35m (3.4ms)[0m  CREATE INDEX "index_spree_property_translations_on_locale" ON "spree_property_translations" ("locale")
+  [1m[36m (3.6ms)[0m  [1mCREATE TABLE "spree_taxonomy_translations" ("id" serial primary key, "spree_taxonomy_id" integer, "locale" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (4.1ms)[0m  ALTER TABLE "spree_taxonomy_translations" ADD COLUMN "name" character varying(255)
+Scoped order and limit are ignored, it's forced to be batch order and batch size
+  [1m[36mSpree::Taxonomy Load (0.5ms)[0m  [1mSELECT "spree_taxonomies".* FROM "spree_taxonomies" ORDER BY "spree_taxonomies"."id" ASC LIMIT 1000[0m
+  [1m[35m (2.5ms)[0m  CREATE INDEX "index_spree_taxonomy_translations_on_spree_taxonomy_id" ON "spree_taxonomy_translations" ("spree_taxonomy_id")
+  [1m[36m (2.4ms)[0m  [1mCREATE INDEX "index_spree_taxonomy_translations_on_locale" ON "spree_taxonomy_translations" ("locale")[0m
+  [1m[35m (3.9ms)[0m  CREATE TABLE "spree_taxon_translations" ("id" serial primary key, "spree_taxon_id" integer, "locale" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (2.4ms)[0m  [1mALTER TABLE "spree_taxon_translations" ADD COLUMN "name" character varying(255)[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "spree_taxon_translations" ADD COLUMN "description" text
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_taxon_translations" ADD COLUMN "meta_title" character varying(255)[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "spree_taxon_translations" ADD COLUMN "meta_description" character varying(255)
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "spree_taxon_translations" ADD COLUMN "meta_keywords" character varying(255)[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "spree_taxon_translations" ADD COLUMN "permalink" character varying(255)
+  [1m[36mSpree::Taxon Load (0.6ms)[0m  [1mSELECT "spree_taxons".* FROM "spree_taxons" ORDER BY "spree_taxons"."id" ASC LIMIT 1000[0m
+  [1m[35m (2.1ms)[0m  CREATE INDEX "index_spree_taxon_translations_on_spree_taxon_id" ON "spree_taxon_translations" ("spree_taxon_id")
+  [1m[36m (1.8ms)[0m  [1mCREATE INDEX "index_spree_taxon_translations_on_locale" ON "spree_taxon_translations" ("locale")[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20131106111313"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddTranslationsToProductPermalink (20131106111314)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "spree_product_translations" ADD COLUMN "permalink" character varying(255)[0m
+  [1m[35mSpree::Product Load (0.3ms)[0m  SELECT "spree_products".* FROM "spree_products" WHERE "spree_products"."deleted_at" IS NULL ORDER BY "spree_products"."id" ASC LIMIT 1000
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20131106111314"]]
+  [1m[35m (1.2ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.6ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (1.9ms)[0m  [1mSELECT COUNT(DISTINCT "spree_users"."id") FROM "spree_users" LEFT OUTER JOIN "spree_roles_users" ON "spree_roles_users"."user_id" = "spree_users"."id" LEFT OUTER JOIN "spree_roles" ON "spree_roles"."id" = "spree_roles_users"."role_id" WHERE "spree_roles"."name" = 'admin'[0m
+  [1m[35mSpree::User Load (1.8ms)[0m  SELECT "spree_users".* FROM "spree_users" WHERE "spree_users"."email" = 'iamweilu@gmail.com' LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mSpree::User Exists (0.7ms)[0m  SELECT 1 AS one FROM "spree_users" WHERE "spree_users"."email" = 'iamweilu@gmail.com' LIMIT 1
+  [1m[36mSpree::User Exists (0.4ms)[0m  [1mSELECT 1 AS one FROM "spree_users" WHERE "spree_users"."email" = 'iamweilu@gmail.com' LIMIT 1[0m
+  [1m[35mSQL (6.2ms)[0m  INSERT INTO "spree_users" ("created_at", "email", "encrypted_password", "login", "password_salt", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["created_at", Thu, 07 Nov 2013 09:19:22 UTC +00:00], ["email", "iamweilu@gmail.com"], ["encrypted_password", "4ee0b3db98acb9472ba0e2ff877b923ac577d47b1411bb1ae79920026c582eeba449b2109d0f78c1496c63c8d4ebe535ab43ef41eb6cbed94e44297d388d904b"], ["login", "iamweilu@gmail.com"], ["password_salt", "FjtGv4r9y7HJ7DbW7u9v"], ["updated_at", Thu, 07 Nov 2013 09:19:22 UTC +00:00]]
+  [1m[36m (1.2ms)[0m  [1mCOMMIT[0m
+DEPRECATION WARNING: This dynamic method is deprecated. Please use e.g. Post.find_or_create_by(name: 'foo') instead. (called from create_admin_user at /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree_auth_devise-8cd2b2d8e634/db/default/users.rb:60)
+  [1m[35mSpree::Role Load (0.6ms)[0m  SELECT "spree_roles".* FROM "spree_roles" WHERE "spree_roles"."name" = 'admin' ORDER BY "spree_roles"."id" ASC LIMIT 1
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "spree_roles" ("name") VALUES ($1) RETURNING "id"  [["name", "admin"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (0.7ms)[0m  [1mINSERT INTO "spree_roles_users" ("user_id", "role_id") VALUES (1, 1)[0m
+  [1m[35m (0.8ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  COMMIT
+
+
+Started GET "/" for 127.0.0.1 at 2013-11-07 20:21:04 +1100
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Spree::HomeController#index as HTML
+  [1m[35mSpree::Preference Load (1.3ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/redirect_https_to_http' LIMIT 1
+  [1m[36mSpree::Preference Load (0.7ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/frontend_configuration/locale' LIMIT 1[0m
+  [1m[35mSpree::Preference Load (0.6ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree_i18n/configuration/supported_locales' LIMIT 1
+  [1m[36mSpree::Preference Load (0.6ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/products_per_page' LIMIT 1[0m
+  [1m[35mSpree::Preference Load (0.7ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/show_products_without_price' LIMIT 1
+  [1m[36mSpree::Preference Load (0.7ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/layout' LIMIT 1[0m
+  [1m[35mSpree::Taxonomy Load (0.7ms)[0m  SELECT "spree_taxonomies".* FROM "spree_taxonomies" ORDER BY spree_taxonomies.position
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_taxonomies.html.erb (6.1ms)
+  [1m[36mSQL (2.4ms)[0m  [1mSELECT DISTINCT "spree_products".id FROM "spree_products" INNER JOIN "spree_variants" ON "spree_variants"."product_id" = "spree_products"."id" AND "spree_variants"."is_master" = 't' INNER JOIN "spree_prices" ON "spree_prices"."variant_id" = "spree_variants"."id" WHERE "spree_products"."deleted_at" IS NULL AND "spree_prices"."currency" = 'USD' AND ("spree_products".deleted_at IS NULL or "spree_products".deleted_at >= '2013-11-07 09:21:04.975988') AND ("spree_products".available_on <= '2013-11-07 09:21:05.036379') AND (spree_prices.amount IS NOT NULL) LIMIT 12 OFFSET 0[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT DISTINCT "spree_products".id FROM "spree_products" INNER JOIN "spree_variants" ON "spree_variants"."product_id" = "spree_products"."id" AND "spree_variants"."is_master" = 't' INNER JOIN "spree_prices" ON "spree_prices"."variant_id" = "spree_variants"."id" WHERE "spree_products"."deleted_at" IS NULL AND "spree_prices"."currency" = 'USD' AND ("spree_products".deleted_at IS NULL or "spree_products".deleted_at >= '2013-11-07 09:21:04.975988') AND ("spree_products".available_on <= '2013-11-07 09:21:05.036379') AND (spree_prices.amount IS NOT NULL) LIMIT 12 OFFSET 0
+  [1m[36m (1.0ms)[0m  [1mSELECT COUNT(*) FROM "spree_products" INNER JOIN "spree_variants" ON "spree_variants"."product_id" = "spree_products"."id" AND "spree_variants"."is_master" = 't' INNER JOIN "spree_prices" ON "spree_prices"."variant_id" = "spree_variants"."id" WHERE "spree_products"."deleted_at" IS NULL AND "spree_prices"."currency" = 'USD' AND ("spree_products".deleted_at IS NULL or "spree_products".deleted_at >= '2013-11-07 09:21:04.975988') AND ("spree_products".available_on <= '2013-11-07 09:21:05.036379') AND (spree_prices.amount IS NOT NULL)[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_products.html.erb (2636.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/home/index.html.erb within spree/layouts/spree_application (2671.7ms)
+  [1m[35mSpree::Preference Load (1.3ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/default_seo_title' LIMIT 1
+  [1m[36mSpree::Preference Load (0.5ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/site_name' LIMIT 1[0m
+  [1m[35mSpree::Preference Load (0.4ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/default_meta_keywords' LIMIT 1
+  [1m[36mSpree::Preference Load (0.5ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/default_meta_description' LIMIT 1[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/core/app/views/spree/shared/_routes.html.erb (0.9ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_head.html.erb (1067.0ms)
+  [1m[35mSpree::Preference Load (0.8ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/logo' LIMIT 1
+[1;32mDeface:[0m 1 overrides found for 'spree/shared/_nav_bar'
+[1;32mDeface:[0m 'auth_shared_login_bar' matched 1 times with 'li#search-bar'
+[1;32mDeface: [ERROR][0m The original source for 'auth_shared_login_bar' has changed, this override should be reviewed to ensure it's still valid.
+  [1m[36mSpree::Taxon Load (0.9ms)[0m  [1mSELECT "spree_taxons".* FROM "spree_taxons" WHERE "spree_taxons"."parent_id" IS NULL ORDER BY "lft"[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_search.html.erb (6.5ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_nav_bar.html.erb (15.2ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/shared/_main_nav_bar'
+[1;32mDeface:[0m 'locale_selector' matched 1 times with '#main-nav-bar'
+[1;32mDeface: [WARNING][0m No :original defined for 'locale_selector', you should change its definition to include:
+ :original => '39691b841d6d5a748e710d3b103d1c50e24740c4' 
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_main_nav_bar.html.erb (2.2ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_header.html.erb (83.3ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_sidebar.html.erb (0.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_footer.html.erb (0.7ms)
+  [1m[35mSpree::Tracker Load (0.7ms)[0m  SELECT "spree_trackers".* FROM "spree_trackers" WHERE "spree_trackers"."active" = 't' AND "spree_trackers"."environment" = 'development' ORDER BY "spree_trackers"."id" ASC LIMIT 1
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_google_analytics.html.erb (8.1ms)
+Completed 200 OK in 4037ms (Views: 3889.0ms | ActiveRecord: 27.4ms)
+
+
+Started GET "/assets/normalize.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:08 +1100
+
+
+Started GET "/assets/skeleton.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/spree_frontend.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/screen.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/all.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/jquery.validate/jquery.validate.min.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/jsuri.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/spree.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/jquery.payment.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/checkout.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/product.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/spree_frontend.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/cart.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/locale.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/spree_i18n.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/all.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/favicon.ico" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/logo/spree_50.png" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/assets/store/cart.png" for 127.0.0.1 at 2013-11-07 20:21:09 +1100
+
+
+Started GET "/login" for 127.0.0.1 at 2013-11-07 20:21:19 +1100
+Processing by Spree::UserSessionsController#new as HTML
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree_auth_devise-8cd2b2d8e634/app/views/spree/shared/_login.html.erb (24.7ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree_auth_devise-8cd2b2d8e634/app/views/spree/user_sessions/new.html.erb within spree/layouts/spree_application (30.7ms)
+  [1m[36mSpree::Preference Load (0.8ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/always_put_site_name_in_title' LIMIT 1[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/core/app/views/spree/shared/_routes.html.erb (0.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_head.html.erb (21.8ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/shared/_nav_bar'
+[1;32mDeface:[0m 'auth_shared_login_bar' matched 1 times with 'li#search-bar'
+[1;32mDeface: [ERROR][0m The original source for 'auth_shared_login_bar' has changed, this override should be reviewed to ensure it's still valid.
+  [1m[35mSpree::Taxon Load (0.8ms)[0m  SELECT "spree_taxons".* FROM "spree_taxons" WHERE "spree_taxons"."parent_id" IS NULL ORDER BY "lft"
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_search.html.erb (2.7ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_nav_bar.html.erb (10.9ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/shared/_main_nav_bar'
+[1;32mDeface:[0m 'locale_selector' matched 1 times with '#main-nav-bar'
+[1;32mDeface: [WARNING][0m No :original defined for 'locale_selector', you should change its definition to include:
+ :original => '73487ef34463b023b73d28ccc9c769d177f6f57f' 
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_main_nav_bar.html.erb (1.9ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_header.html.erb (42.0ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_footer.html.erb (0.3ms)
+  [1m[36mSpree::Tracker Load (1.0ms)[0m  [1mSELECT "spree_trackers".* FROM "spree_trackers" WHERE "spree_trackers"."active" = 't' AND "spree_trackers"."environment" = 'development' ORDER BY "spree_trackers"."id" ASC LIMIT 1[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_google_analytics.html.erb (2.0ms)
+Completed 200 OK in 285ms (Views: 128.7ms | ActiveRecord: 7.1ms)
+
+
+Started GET "/assets/normalize.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/all.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/spree_frontend.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/skeleton.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/screen.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/jquery.validate/jquery.validate.min.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/jsuri.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/spree.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/jquery.payment.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/checkout.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/product.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/cart.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/spree_frontend.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/locale.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/spree_i18n.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started GET "/assets/store/all.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:20 +1100
+
+
+Started POST "/login" for 127.0.0.1 at 2013-11-07 20:21:32 +1100
+Processing by Spree::UserSessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"BgGhn49GYkgKrCCxU+0vVB9KkzEapZG+vKIvEBOgiGk=", "spree_user"=>{"email"=>"iamweilu@gmail.com", "password"=>"[FILTERED]", "remember_me"=>"1"}, "commit"=>"登录"}
+  [1m[35mSpree::User Load (1.3ms)[0m  SELECT "spree_users".* FROM "spree_users" WHERE "spree_users"."email" = 'iamweilu@gmail.com' LIMIT 1
+  [1m[36mSpree::User Load (1.0ms)[0m  [1mSELECT "spree_users".* FROM "spree_users" WHERE "spree_users"."remember_token" = 'L2zUvYRORij6F1PcfMwW' ORDER BY "spree_users"."id" ASC LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (2.0ms)[0m  [1mUPDATE "spree_users" SET "remember_token" = $1, "remember_created_at" = $2, "updated_at" = $3 WHERE "spree_users"."id" = 1[0m  [["remember_token", "L2zUvYRORij6F1PcfMwW"], ["remember_created_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00], ["updated_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00]]
+  [1m[35m (0.9ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  UPDATE "spree_users" SET "last_sign_in_at" = $1, "current_sign_in_at" = $2, "last_sign_in_ip" = $3, "current_sign_in_ip" = $4, "sign_in_count" = $5, "updated_at" = $6 WHERE "spree_users"."id" = 1  [["last_sign_in_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00], ["current_sign_in_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00], ["last_sign_in_ip", "127.0.0.1"], ["current_sign_in_ip", "127.0.0.1"], ["sign_in_count", 1], ["updated_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "spree_users" SET "spree_api_key" = $1, "updated_at" = $2 WHERE "spree_users"."id" = 1[0m  [["spree_api_key", "2a9cb479ee908dc68618387d51a7bfa5040281e51c277e10"], ["updated_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00]]
+  [1m[35m (0.8ms)[0m  COMMIT
+  [1m[36mSpree::Order Load (1.8ms)[0m  [1mSELECT "spree_orders".* FROM "spree_orders" WHERE "spree_orders"."user_id" = $1 AND "spree_orders"."completed_at" IS NULL AND "spree_orders"."created_by_id" = 1 ORDER BY created_at DESC LIMIT 1[0m  [["user_id", 1]]
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36mSpree::Order Load (0.8ms)[0m  [1mSELECT "spree_orders".* FROM "spree_orders" WHERE "spree_orders"."number" = 'R843070703' ORDER BY "spree_orders"."id" ASC LIMIT 1[0m
+  [1m[35m (0.6ms)[0m  SELECT COUNT(*) FROM "spree_orders" WHERE (spree_orders.number LIKE 'R843070703%')
+  [1m[36mSpree::Preference Load (0.6ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/always_include_confirm_step' LIMIT 1[0m
+  [1m[35mSQL (1.8ms)[0m  INSERT INTO "spree_orders" ("created_at", "created_by_id", "currency", "email", "number", "state", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["created_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00], ["created_by_id", 1], ["currency", "USD"], ["email", "iamweilu@gmail.com"], ["number", "R843070703"], ["state", "cart"], ["updated_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00], ["user_id", 1]]
+  [1m[36mSpree::TokenizedPermission Load (1.4ms)[0m  [1mSELECT "spree_tokenized_permissions".* FROM "spree_tokenized_permissions" WHERE "spree_tokenized_permissions"."permissable_id" = $1 AND "spree_tokenized_permissions"."permissable_type" = $2 ORDER BY "spree_tokenized_permissions"."id" ASC LIMIT 1[0m  [["permissable_id", 1], ["permissable_type", "Spree::Order"]]
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "spree_tokenized_permissions" ("created_at", "permissable_id", "permissable_type", "token", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["created_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00], ["permissable_id", 1], ["permissable_type", "Spree::Order"], ["token", "49bacc221a4ea88b"], ["updated_at", Thu, 07 Nov 2013 09:21:32 UTC +00:00]]
+  [1m[36mSpree::Adjustment Load (1.5ms)[0m  [1mSELECT "spree_adjustments".* FROM "spree_adjustments" WHERE "spree_adjustments"."adjustable_id" = $1 AND "spree_adjustments"."adjustable_type" = $2 AND "spree_adjustments"."originator_type" = 'Spree::TaxRate' AND "spree_adjustments"."adjustable_type" = 'Spree::Order' ORDER BY spree_adjustments.created_at ASC[0m  [["adjustable_id", 1], ["adjustable_type", "Spree::Order"]]
+  [1m[35mSpree::Adjustment Load (2.0ms)[0m  SELECT "spree_adjustments".* FROM "spree_adjustments" INNER JOIN "spree_line_items" ON "spree_adjustments"."adjustable_id" = "spree_line_items"."id" AND "spree_adjustments"."adjustable_type" = 'Spree::LineItem' WHERE "spree_line_items"."order_id" = $1 AND "spree_adjustments"."originator_type" = 'Spree::TaxRate' ORDER BY created_at ASC  [["order_id", 1]]
+  [1m[36mSpree::Preference Load (1.1ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/tax_using_ship_address' LIMIT 1[0m
+  [1m[35mSpree::Zone Load (0.8ms)[0m  SELECT "spree_zones".* FROM "spree_zones" ORDER BY zone_members_count, created_at
+  [1m[36mSpree::Zone Load (0.5ms)[0m  [1mSELECT "spree_zones".* FROM "spree_zones" WHERE "spree_zones"."default_tax" = 't' ORDER BY "spree_zones"."id" ASC LIMIT 1[0m
+  [1m[35m (0.8ms)[0m  COMMIT
+Redirected to http://localhost:3000/
+Completed 302 Found in 418ms (ActiveRecord: 38.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-11-07 20:21:32 +1100
+Processing by Spree::HomeController#index as HTML
+  [1m[36mSpree::User Load (1.4ms)[0m  [1mSELECT "spree_users".* FROM "spree_users" WHERE "spree_users"."id" = 1 ORDER BY "spree_users"."id" ASC LIMIT 1[0m
+  [1m[35mSpree::Order Load (0.7ms)[0m  SELECT "spree_orders".* FROM "spree_orders" WHERE "spree_orders"."user_id" = $1 AND "spree_orders"."completed_at" IS NULL AND "spree_orders"."created_by_id" = 1 ORDER BY created_at DESC LIMIT 1  [["user_id", 1]]
+  [1m[36mSpree::Order Load (0.9ms)[0m  [1mSELECT "spree_orders".* FROM "spree_orders" WHERE "spree_orders"."id" = 1 AND "spree_orders"."currency" = 'USD' LIMIT 1[0m
+  [1m[35mSpree::Adjustment Load (0.7ms)[0m  SELECT "spree_adjustments".* FROM "spree_adjustments" WHERE "spree_adjustments"."adjustable_type" = 'Spree::Order' AND "spree_adjustments"."adjustable_id" IN (1) ORDER BY spree_adjustments.created_at ASC
+  [1m[36mSpree::Taxonomy Load (0.7ms)[0m  [1mSELECT "spree_taxonomies".* FROM "spree_taxonomies" ORDER BY spree_taxonomies.position[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_taxonomies.html.erb (2.0ms)
+  [1m[35mSQL (1.1ms)[0m  SELECT DISTINCT "spree_products".id FROM "spree_products" INNER JOIN "spree_variants" ON "spree_variants"."product_id" = "spree_products"."id" AND "spree_variants"."is_master" = 't' INNER JOIN "spree_prices" ON "spree_prices"."variant_id" = "spree_variants"."id" WHERE "spree_products"."deleted_at" IS NULL AND "spree_prices"."currency" = 'USD' AND ("spree_products".deleted_at IS NULL or "spree_products".deleted_at >= '2013-11-07 09:21:32.878260') AND ("spree_products".available_on <= '2013-11-07 09:21:32.878598') AND (spree_prices.amount IS NOT NULL) LIMIT 12 OFFSET 0
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT DISTINCT "spree_products".id FROM "spree_products" INNER JOIN "spree_variants" ON "spree_variants"."product_id" = "spree_products"."id" AND "spree_variants"."is_master" = 't' INNER JOIN "spree_prices" ON "spree_prices"."variant_id" = "spree_variants"."id" WHERE "spree_products"."deleted_at" IS NULL AND "spree_prices"."currency" = 'USD' AND ("spree_products".deleted_at IS NULL or "spree_products".deleted_at >= '2013-11-07 09:21:32.878260') AND ("spree_products".available_on <= '2013-11-07 09:21:32.878598') AND (spree_prices.amount IS NOT NULL) LIMIT 12 OFFSET 0[0m
+  [1m[35m (1.0ms)[0m  SELECT COUNT(*) FROM "spree_products" INNER JOIN "spree_variants" ON "spree_variants"."product_id" = "spree_products"."id" AND "spree_variants"."is_master" = 't' INNER JOIN "spree_prices" ON "spree_prices"."variant_id" = "spree_variants"."id" WHERE "spree_products"."deleted_at" IS NULL AND "spree_prices"."currency" = 'USD' AND ("spree_products".deleted_at IS NULL or "spree_products".deleted_at >= '2013-11-07 09:21:32.878260') AND ("spree_products".available_on <= '2013-11-07 09:21:32.878598') AND (spree_prices.amount IS NOT NULL)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_products.html.erb (20.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/home/index.html.erb within spree/layouts/spree_application (33.2ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/core/app/views/spree/shared/_routes.html.erb (0.5ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_head.html.erb (15.8ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/shared/_nav_bar'
+[1;32mDeface:[0m 'auth_shared_login_bar' matched 1 times with 'li#search-bar'
+[1;32mDeface: [ERROR][0m The original source for 'auth_shared_login_bar' has changed, this override should be reviewed to ensure it's still valid.
+  [1m[36mSpree::Taxon Load (0.9ms)[0m  [1mSELECT "spree_taxons".* FROM "spree_taxons" WHERE "spree_taxons"."parent_id" IS NULL ORDER BY "lft"[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_search.html.erb (2.9ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_nav_bar.html.erb (9.8ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/shared/_main_nav_bar'
+[1;32mDeface:[0m 'locale_selector' matched 1 times with '#main-nav-bar'
+[1;32mDeface: [WARNING][0m No :original defined for 'locale_selector', you should change its definition to include:
+ :original => '9381b417aafd746fc31fc4415d2d32c831241859' 
+  [1m[35mSpree::LineItem Load (1.5ms)[0m  SELECT "spree_line_items".* FROM "spree_line_items" WHERE "spree_line_items"."order_id" = $1 ORDER BY created_at ASC  [["order_id", 1]]
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_main_nav_bar.html.erb (5.8ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_header.html.erb (45.8ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_sidebar.html.erb (0.2ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_footer.html.erb (0.3ms)
+  [1m[36mSpree::Tracker Load (0.5ms)[0m  [1mSELECT "spree_trackers".* FROM "spree_trackers" WHERE "spree_trackers"."active" = 't' AND "spree_trackers"."environment" = 'development' ORDER BY "spree_trackers"."id" ASC LIMIT 1[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/frontend/app/views/spree/shared/_google_analytics.html.erb (1.5ms)
+Completed 200 OK in 162ms (Views: 129.4ms | ActiveRecord: 9.4ms)
+
+
+Started GET "/assets/normalize.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/screen.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/spree_frontend.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/skeleton.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/all.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/product.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/jquery.validate/jquery.validate.min.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/spree.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/jquery.payment.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/jsuri.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/checkout.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/cart.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/spree_frontend.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/locale.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/spree_i18n.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/assets/store/all.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:33 +1100
+
+
+Started GET "/admin" for 127.0.0.1 at 2013-11-07 20:21:45 +1100
+Processing by Spree::Admin::OrdersController#index as HTML
+  [1m[35mSpree::User Load (0.7ms)[0m  SELECT "spree_users".* FROM "spree_users" WHERE "spree_users"."id" = 1 ORDER BY "spree_users"."id" ASC LIMIT 1
+  [1m[36mSpree::Preference Load (0.5ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/backend_configuration/locale' LIMIT 1[0m
+  [1m[35m (1.1ms)[0m  SELECT COUNT(*) FROM "spree_roles" INNER JOIN "spree_roles_users" ON "spree_roles"."id" = "spree_roles_users"."role_id" WHERE "spree_roles_users"."user_id" = $1 AND "spree_roles"."name" = 'admin'  [["user_id", 1]]
+  [1m[36mSpree::Preference Load (0.5ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/show_only_complete_orders_by_default' LIMIT 1[0m
+  [1m[35mSpree::Preference Load (0.5ms)[0m  SELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/orders_per_page' LIMIT 1
+  [1m[36m (0.4ms)[0m  [1mSELECT COUNT(*) FROM "spree_orders" WHERE ("spree_orders"."completed_at" IS NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  SELECT COUNT(count_column) FROM (SELECT 1 AS count_column FROM "spree_orders" WHERE ("spree_orders"."completed_at" IS NOT NULL) LIMIT 15 OFFSET 0) subquery_for_count
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/orders/index.html.erb within spree/layouts/admin (65.9ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/admin/shared/_translations'
+[1;32mDeface:[0m 'translation' matched 1 times with 'script'
+[1;32mDeface: [WARNING][0m No :original defined for 'translation', you should change its definition to include:
+ :original => 'c968cbe1a4e97e487e295a8c665d286828fb242d' 
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_translations.html.erb (51.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/core/app/views/spree/shared/_routes.html.erb (0.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_routes.html.erb (13.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_head.html.erb (3641.5ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_alert.html.erb (0.0ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/admin/shared/_header'
+[1;32mDeface:[0m 'auth_admin_login_navigation_bar' matched 1 times with '[data-hook='admin_login_navigation_bar'], #admin_login_navigation_bar[data-hook]'
+[1;32mDeface: [ERROR][0m The original source for 'auth_admin_login_navigation_bar' has changed, this override should be reviewed to ensure it's still valid.
+  [1m[36mSpree::Preference Load (0.7ms)[0m  [1mSELECT "spree_preferences".* FROM "spree_preferences" WHERE "spree_preferences"."key" = '/spree/app_configuration/admin_interface_logo' LIMIT 1[0m
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_header.html.erb (6.0ms)
+[1;32mDeface:[0m 1 overrides found for 'spree/admin/shared/_menu'
+[1;32mDeface:[0m 'user_admin_tabs' matched 1 times with '[data-hook='admin_tabs'], #admin_tabs[data-hook]'
+[1;32mDeface: [ERROR][0m The original source for 'user_admin_tabs' has changed, this override should be reviewed to ensure it's still valid.
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_tabs.html.erb (16.4ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_menu.html.erb (25.2ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_sub_menu.html.erb (0.5ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_content_header.html.erb (0.8ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_table_filter.html.erb (0.6ms)
+  Rendered /home/wei/.rvm/gems/ruby-2.0.0-p247@spree/bundler/gems/spree-a8a45502639a/backend/app/views/spree/admin/shared/_sidebar.html.erb (0.6ms)
+Completed 200 OK in 3900ms (Views: 3837.6ms | ActiveRecord: 12.8ms)
+
+
+Started GET "/assets/jquery.alerts/jquery.alerts.spree.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:49 +1100
+
+
+Started GET "/assets/responsive-tables.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/normalize.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/skeleton.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.core.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.alerts/jquery.alerts.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.theme.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.datepicker.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.menu.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.powertip.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.autocomplete.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/select2.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/admin/spree_admin.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/admin/spree_backend.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/admin/all.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/admin/translations.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/admin/spree_i18n.css?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery-migrate-1.0.0.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.core.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.datepicker.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.widget.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.mouse.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.sortable.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.position.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.autocomplete.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.ui.menu.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/modernizr.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:50 +1100
+
+
+Started GET "/assets/jquery.cookie.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.delayedobserver.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.alerts/jquery.alerts.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.jstree/jquery.jstree.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.powertip.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.vAlign.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/css_browser_selector_dev.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/spin.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/trunk8.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.adaptivemenu.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/equalize.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/responsive-tables.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jsuri.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/spree.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/select2.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/spree-select2.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/address_states.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/admin.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/handlebars.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/handlebar_extensions.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/variant_autocomplete.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/taxon_autocomplete.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/option_type_autocomplete.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/user_picker.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/product_picker.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/calculator.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/jquery.payment.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/checkouts/edit.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/gateway.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/image_settings.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/images/index.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/nested-attribute.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/images/new.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:51 +1100
+
+
+Started GET "/assets/admin/orders/edit.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/orders/edit_form.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/payments/edit.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/payments/new.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/progress.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/promotions.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/shipments.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/states.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/stock_management.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/stock_transfer.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/taxon_tree_menu.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/taxonomy.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/underscore-min.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/zone.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/spree_backend.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/translations.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/spree_i18n.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/admin/all.js?body=1" for 127.0.0.1 at 2013-11-07 20:21:52 +1100
+
+
+Started GET "/assets/fontawesome-webfont.woff?v=3.2.1" for 127.0.0.1 at 2013-11-07 20:21:53 +1100
